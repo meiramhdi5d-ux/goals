@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мои цели</title>
+<style>
+  :root {
+    --blue: #2563eb;
+    --blue-d: #1d4ed8;
+    --sky: #dbeafe;
+    --ink: #0f2a5c;
+    --muted: #5b7099;
+    --line: #cfe0fb;
+    --late: #dc2626;
+    --soon: #d97706;
+    --ok: #16a34a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background: linear-gradient(120deg, #ffffff, #e3eeff, #ffffff, #cfe2ff);
+    background-size: 300% 300%;
+    animation: flow 18s ease-in-out infinite;
+    overflow-x: hidden;
+  }
+  @keyframes flow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .bubble {
+    position: fixed; border-radius: 50%; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle at 30% 30%, rgba(96,165,250,.45), rgba(37,99,235,.08));
+    animation: float 14s ease-in-out infinite;
+  }
+  .b1 { width: 260px; height: 260px; top: -60px; left: -80px; }
+  .b2 { width: 180px; height: 180px; bottom: 8%; right: -50px; animation-delay: -5s; }
+  .b3 { width: 120px; height: 120px; top: 45%; left: 6%; animation-delay: -9s; opacity: .7; }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(24px,-34px) scale(1.08); }
+  }
+
+  main { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 36px 16px 80px; }
+  h1 {
+    font-size: 2.3rem; margin: 0 0 4px; letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--blue-d), #38bdf8, var(--blue-d));
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+
+  .panel, li {
+    background: rgba(255,255,255,.88);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(37,99,235,.10);
+    backdrop-filter: blur(6px);
+  }
+  .panel { padding: 14px; margin-bottom: 22px; display: grid; gap: 10px; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+
+  input, button { font: inherit; }
+  input[type="text"], input[type="date"] {
+    padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px;
+    background: #fff; color: var(--ink); width: 100%;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  input[type="text"]:focus, input[type="date"]:focus {
+    outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+  }
+  .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn {
+    border: 0; cursor: pointer; border-radius: 12px; padding: 11px 18px;
+    transition: transform .15s, box-shadow .2s, background .2s;
+  }
+  .btn:active { transform: scale(.96); }
+  .primary { background: linear-gradient(135deg, var(--blue), #3b82f6); color: #fff; box-shadow: 0 6px 16px rgba(37,99,235,.35); }
+  .primary:hover { box-shadow: 0 8px 22px rgba(37,99,235,.5); transform: translateY(-1px); }
+  .ghost { background: var(--sky); color: var(--blue-d); }
+  .ghost:hover { background: #c7dcfc; }
+  .picked { color: var(--muted); font-size: .9rem; }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  .progress { height: 8px; background: var(--sky); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+  .progress > div {
+    height: 100%; width: 0; border-radius: 4px; transition: width .5s ease;
+    background: linear-gradient(90deg, var(--blue), #38bdf8, var(--blue));
+    background-size: 200% 100%; animation: run 2.5s linear infinite;
+  }
+  @keyframes run { to { background-position: -200% 0; } }
+  .count { color: var(--muted); font-size: .9rem; margin: 0 0 16px; }
+
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  li {
+    padding: 14px 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+    animation: pop .45s cubic-bezier(.2,.9,.3,1.2) both;
+    transition: transform .2s, box-shadow .2s;
+  }
+  li:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(37,99,235,.18); }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+
+  input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none; width: 26px; height: 26px; margin: 0;
+    border: 2px solid var(--blue); border-radius: 8px; background: #fff; cursor: pointer; position: relative;
+    transition: background .25s, transform .2s;
+  }
+  input[type="checkbox"]:checked { background: var(--blue); animation: bump .35s; }
+  input[type="checkbox"]::after {
+    content: ""; position: absolute; left: 7px; top: 2px; width: 7px; height: 13px;
+    border: solid #fff; border-width: 0 3px 3px 0; transform: rotate(45deg) scale(0); transition: transform .25s .05s;
+  }
+  input[type="checkbox"]:checked::after { transform: rotate(45deg) scale(1); }
+  @keyframes bump { 50% { transform: scale(1.25); } }
+
+  .title { font-size: 1.08rem; font-weight: 600; word-break: break-word; }
+  .due { font-size: .85rem; color: var(--muted); }
+  .due.late { color: var(--late); }
+  .due.soon { color: var(--soon); }
+  li.done .title { text-decoration: line-through; color: var(--muted); }
+  li.done .due { color: var(--ok); }
+  .del { border: 0; background: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; padding: 2px 8px; border-radius: 8px; }
+  .del:hover { color: var(--late); background: #fee2e2; }
+
+  .att { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .file { position: relative; animation: pop .35s both; }
+  .file img { width: 84px; height: 84px; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); display: block; transition: transform .2s; }
+  .file img:hover { transform: scale(1.06); }
+  .chip {
+    display: inline-block; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    padding: 9px 30px 9px 12px; background: var(--sky); color: var(--blue-d); border-radius: 12px;
+    text-decoration: none; font-size: .9rem;
+  }
+  .chip:hover { background: #c7dcfc; }
+  .rm {
+    position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border: 0; border-radius: 50%;
+    background: var(--blue-d); color: #fff; font-size: 14px; line-height: 22px; text-align: center; cursor: pointer; padding: 0;
+  }
+  .rm:hover { background: var(--late); }
+  .addf { padding: 8px 14px; font-size: .9rem; }
+  .empty { display: block; text-align: center; color: var(--muted); padding: 30px 16px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+
+<main>
+  <h1>Мои цели</h1>
+  <p class="sub">Запишите цель, срок, прикрепите фото или файлы и отметьте галочкой, когда готово.</p>
+
+  <form class="panel" id="form">
+    <div class="row">
+      <input type="text" id="title" placeholder="Например: прочитать 12 книг" maxlength="120" required aria-label="Цель">
+      <input type="date" id="date" required aria-label="Дедлайн">
+    </div>
+    <div class="actions">
+      <label class="btn ghost" for="pick">Прикрепить фото или файлы</label>
+      <input type="file" id="pick" multiple hidden>
+      <span class="picked" id="picked"></span>
+      <button class="btn primary" type="submit" style="margin-left:auto">Добавить цель</button>
+    </div>
+  </form>
+
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+  <p class="count" id="count"></p>
+  <ul id="list"></ul>
+</main>
+
+<script>
+  const KEY = "goals-v2";
+  const MAX_MB = 25;
+  let goals = [];
+  try { goals = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { goals = []; }
+  let files = [];
+  let pending = [];
+
+  const $ = id => document.getElementById(id);
+  const list = $("list"), form = $("form"), titleEl = $("title"), dateEl = $("date");
+  const bar = $("bar"), count = $("count"), pick = $("pick"), picked = $("picked");
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(goals)); } catch (e) {} }
+
+  /* ---------- IndexedDB для файлов ---------- */
+  const dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("goals-files", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("files", { keyPath: "id" });
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+  function dbDo(fn) {
+    return dbp.then(db => new Promise((res, rej) => {
+      const t = db.transaction("files", "readwrite");
+      fn(t.objectStore("files"));
+      t.oncomplete = res; t.onerror = () => rej(t.error);
+    }));
+  }
+  dbp.then(db => {
+    const r = db.transaction("files").objectStore("files").getAll();
+    r.onsuccess = () => {
+      files = r.result.map(f => ({ ...f, url: URL.createObjectURL(f.blob) }));
+      render();
+    };
+  }).catch(() => {});
+
+  async function addFiles(goalId, fileList) {
+    for (const f of fileList) {
+      if (f.size > MAX_MB * 1048576) { alert("Файл «" + f.name + "» больше " + MAX_MB + " МБ и не добавлен."); continue; }
+      const rec = { id: Date.now() + "-" + Math.random().toString(36).slice(2), goalId, name: f.name, type: f.type, blob: f };
+      try {
+        await dbDo(s => s.put(rec));
+        files.push({ ...rec, url: URL.createObjectURL(f) });
+      } catch (e) { alert("Не удалось сохранить файл «" + f.name + "»."); }
+    }
+    render();
+  }
+  function removeFile(id) {
+    const f = files.find(x => x.id === id);
+    if (f) URL.revokeObjectURL(f.url);
+    files = files.filter(x => x.id !== id);
+    dbDo(s => s.delete(id)).catch(() => {});
+    render();
+  }
+
+  /* ---------- Даты ---------- */
+  function daysLeft(dateStr) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return Math.round((new Date(dateStr + "T00:00:00") - today) / 86400000);
+  }
+  function dueText(g) {
+    const date = new Date(g.date + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+    if (g.done) return { text: "Выполнено · срок был " + date, cls: "" };
+    const n = daysLeft(g.date);
+    if (n < 0) return { text: "Просрочено · " + date, cls: "late" };
+    if (n === 0) return { text: "Сегодня · " + date, cls: "soon" };
+    if (n <= 3) return { text: "Осталось дней: " + n + " · " + date, cls: "soon" };
+    return { text: "До " + date, cls: "" };
+  }
+
+  /* ---------- Отрисовка ---------- */
+  function render() {
+    goals.sort((a, b) => a.done - b.done || a.date.localeCompare(b.date));
+    list.innerHTML = "";
+    if (!goals.length) list.innerHTML = '<li class="empty">Целей пока нет. Добавьте первую выше.</li>';
+
+    goals.forEach((g, i) => {
+      const li = document.createElement("li");
+      li.style.animationDelay = Math.min(i * 40, 400) + "ms";
+      if (g.done) li.className = "done";
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = g.done;
+      cb.setAttribute("aria-label", "Цель выполнена: " + g.title);
+      cb.onchange = () => { g.done = cb.checked; save(); render(); };
+
+      const box = document.createElement("div");
+      const t = document.createElement("div"); t.className = "title"; t.textContent = g.title;
+      const info = dueText(g);
+      const d = document.createElement("div"); d.className = "due " + info.cls; d.textContent = info.text;
+      box.append(t, d);
+
+      const del = document.createElement("button");
+      del.className = "del"; del.textContent = "×";
+      del.setAttribute("aria-label", "Удалить цель: " + g.title);
+      del.onclick = () => {
+        files.filter(f => f.goalId === g.id).forEach(f => removeFile(f.id));
+        goals = goals.filter(x => x.id !== g.id); save(); render();
+      };
+
+      const att = document.createElement("div"); att.className = "att";
+      files.filter(f => f.goalId === g.id).forEach(f => {
+        const item = document.createElement("div"); item.className = "file";
+        const a = document.createElement("a");
+        if (f.type && f.type.startsWith("image/")) {
+          a.href = f.url; a.target = "_blank"; a.rel = "noopener";
+          const img = document.createElement("img"); img.src = f.url; img.alt = f.name;
+          a.append(img);
+        } else {
+          a.href = f.url; a.download = f.name; a.className = "chip"; a.textContent = f.name; a.title = f.name;
+        }
+        const rm = document.createElement("button");
+        rm.className = "rm"; rm.textContent = "×"; rm.setAttribute("aria-label", "Удалить файл " + f.name);
+        rm.onclick = () => removeFile(f.id);
+        item.append(a, rm); att.append(item);
+      });
+
+      const input = document.createElement("input");
+      input.type = "file"; input.multiple = true; input.hidden = true;
+      input.onchange = () => { addFiles(g.id, [...input.files]); };
+      const add = document.createElement("button");
+      add.type = "button"; add.className = "btn ghost addf"; add.textContent = "Прикрепить";
+      add.onclick = () => input.click();
+      att.append(add, input);
+
+      li.append(cb, box, del, att);
+      list.append(li);
+    });
+
+    const done = goals.filter(g => g.done).length;
+    bar.style.width = goals.length ? (done / goals.length * 100) + "%" : "0";
+    count.textContent = goals.length ? "Выполнено " + done + " из " + goals.length : "";
+  }
+
+  pick.addEventListener("change", () => {
+    pending = [...pick.files];
+    picked.textContent = pending.length ? "Выбрано: " + pending.length : "";
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = titleEl.value.trim();
+    if (!title || !dateEl.value) return;
+    const goal = { id: Date.now(), title, date: dateEl.value, done: false };
+    goals.push(goal); save();
+    const toAdd = pending; pending = [];
+    form.reset(); picked.textContent = ""; titleEl.focus();
+    render();
+    if (toAdd.length) addFiles(goal.id, toAdd);
+  });
+
+  render();
+</script>
+</body>
+</html>
